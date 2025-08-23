@@ -47,6 +47,12 @@ opt.clipboard:append("unnamedplus")
 -- vim.keymap.set({ "n", "v" }, "x", '"_x', { noremap = true }) -- delete without yanking
 -- vim.keymap.set({ "n", "v" }, "X", '"_X', { noremap = true }) -- delete without yanking
 
+vim.opt.incsearch = true -- Incremental search
+vim.opt.hlsearch = true -- Highlight search
+vim.opt.ignorecase = true -- Case insensitive search
+vim.opt.smartcase = true -- Smart case sensitivity
+vim.opt.lazyredraw = true
+
 -- split windows
 opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
