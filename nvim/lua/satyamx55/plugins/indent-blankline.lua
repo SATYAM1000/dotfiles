@@ -3,20 +3,14 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   main = "ibl",
   config = function()
-    local highlight = {
-      "RainbowRed",
-      "RainbowYellow",
-      "RainbowBlue",
-      "RainbowOrange",
-      "RainbowGreen",
-      "RainbowViolet",
-      "RainbowCyan",
-    }
-
     local hooks = require("ibl.hooks")
 
-    -- reset highlights every time colorscheme changes
+    -- Reset highlights on colorscheme change
     hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+      -- normal indent (subtle grey)
+      vim.api.nvim_set_hl(0, "IndentGrey", { fg = "#3E4451" })
+
+      -- scope highlight (bright rainbow)
       vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
       vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
       vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
@@ -27,10 +21,21 @@ return {
     end)
 
     require("ibl").setup({
-      indent = { highlight = highlight }, -- rainbow indents
-      scope = { highlight = highlight }, -- rainbow scope (optional)
+      indent = { highlight = { "IndentGrey" } }, -- all normal indents same
+      scope = {
+        highlight = {
+          "RainbowRed",
+          "RainbowYellow",
+          "RainbowBlue",
+          "RainbowOrange",
+          "RainbowGreen",
+          "RainbowViolet",
+          "RainbowCyan",
+        },
+      },
     })
 
+    -- Use Treesitter extmarks for scope detection
     hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
   end,
 }
