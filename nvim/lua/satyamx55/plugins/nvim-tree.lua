@@ -9,11 +9,6 @@ return {
     vim.g.loaded_netrwPlugin = 1
 
     nvimtree.setup({
-      filters = {
-        dotfiles = true, -- hide dotfiles
-        custom = {},
-        exclude = {},
-      },
       view = {
         width = 35,
         relativenumber = true,
@@ -43,7 +38,9 @@ return {
         },
       },
       filters = {
+        dotfiles = true, -- hide dotfiles
         custom = { ".DS_Store" },
+        exclude = {},
       },
       git = {
         ignore = false,

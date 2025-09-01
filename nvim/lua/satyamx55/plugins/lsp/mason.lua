@@ -38,6 +38,8 @@ return {
         "prismals",
         "pyright",
       },
+      -- Automatic setup of servers
+      automatic_installation = true,
     })
 
     mason_tool_installer.setup({

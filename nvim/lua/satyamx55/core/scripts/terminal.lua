@@ -43,8 +43,8 @@ function M.toggle()
   M.term_win = vim.api.nvim_get_current_win()
 
   -- Set buffer options
-  vim.api.nvim_buf_set_option(M.term_buf, "buflisted", false)
-  vim.api.nvim_buf_set_option(M.term_buf, "filetype", "terminal")
+  vim.bo[M.term_buf].buflisted = false
+  vim.bo[M.term_buf].filetype = "terminal"
 
   vim.cmd("startinsert")
 end

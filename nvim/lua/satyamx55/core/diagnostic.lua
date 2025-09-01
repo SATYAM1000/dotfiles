@@ -17,7 +17,7 @@ vim.diagnostic.config({
   },
   signs = true,
   underline = true,
-  update_in_insert = false,
+  update_in_insert = true, -- Show diagnostics even in insert mode
   severity_sort = true,
 })
 
@@ -25,13 +25,12 @@ vim.diagnostic.config({
 local keymap = vim.keymap
 keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 
--- You might want to make the diagnostic float window appear automatically when hovering over errors
+-- Make the diagnostic float window appear automatically when hovering over errors
 vim.cmd([[
   augroup DiagnosticHover
     autocmd!
-    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false})
+    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
   augroup END
 ]])
 
--- Set delay for hover diagnostics to appear (in milliseconds)
-vim.opt.updatetime = 300
+-- Note: updatetime is set in core/options.lua to 300ms

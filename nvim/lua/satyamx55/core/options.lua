@@ -47,10 +47,7 @@ opt.clipboard:append("unnamedplus")
 -- vim.keymap.set({ "n", "v" }, "x", '"_x', { noremap = true }) -- delete without yanking
 -- vim.keymap.set({ "n", "v" }, "X", '"_X', { noremap = true }) -- delete without yanking
 
-vim.opt.incsearch = true -- Incremental search
-vim.opt.hlsearch = true -- Highlight search
-vim.opt.ignorecase = true -- Case insensitive search
-vim.opt.smartcase = true -- Smart case sensitivity
+-- Search options already defined above (lines 16-17)
 vim.opt.lazyredraw = true
 
 -- split windows
@@ -59,35 +56,6 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- turn off swapfile
 opt.swapfile = false
 -- Set updatetime for CursorHold
--- 200ms of no cursor movement to trigger CursorHold (reduced from 300ms)
-opt.updatetime = 200
--- Configure diagnostics display
-vim.diagnostic.config({
-  virtual_text = {
-    prefix = "●", -- Could be '■', '▎', 'x', '●', etc
-    source = "if_many",
-    severity = {
-      min = vim.diagnostic.severity.HINT,
-    },
-  },
-  float = {
-    source = true,
-    border = "rounded",
-    header = "",
-    prefix = "",
-  },
-  signs = true,
-  underline = true,
-  update_in_insert = true, -- Show diagnostics even in insert mode
-  severity_sort = true,
-})
--- Create an autocommand to show diagnostics in a floating window when cursor hovers
-vim.cmd([[
-  augroup DiagnosticHover
-    autocmd!
-    autocmd CursorHold * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})
-  augroup END
-]])
--- Define keymap for floating diagnostic
-local keymap = vim.keymap
-keymap.set("n", "<leader>df", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
+-- 300ms of no cursor movement to trigger CursorHold
+opt.updatetime = 300
+-- Diagnostic configuration moved to core/diagnostic.lua
