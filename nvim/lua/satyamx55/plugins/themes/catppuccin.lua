@@ -53,8 +53,12 @@ return {
             -- Make splits and borders blend
             VertSplit = { bg = colors.mantle, fg = colors.surface0 },
             WinSeparator = { bg = colors.mantle, fg = colors.surface0 },
-            StatusLine = { bg = colors.mantle },
-            StatusLineNC = { bg = colors.mantle },
+            StatusLine = { bg = colors.base },
+            StatusLineNC = { bg = colors.base },
+            -- Lualine specific highlights
+            lualine_c_normal = { bg = colors.base },
+            lualine_b_normal = { bg = colors.base },
+            lualine_a_normal = { bg = colors.blue, fg = colors.base },
           }
         end,
         integrations = {
