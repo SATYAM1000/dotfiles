@@ -24,7 +24,10 @@ return {
 
     telescope.setup({
       defaults = {
+        prompt_prefix = " ",
+        selection_caret = " ",
         path_display = { "smart" },
+        file_ignore_patterns = { ".git/", "node_modules" },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
@@ -33,10 +36,44 @@ return {
             ["<C-t>"] = trouble_telescope.open,
           },
         },
+        -- Use Catppuccin theme for Telescope
+        layout_strategy = "horizontal",
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.55,
+            results_width = 0.8,
+          },
+          vertical = {
+            mirror = false,
+          },
+          width = 0.87,
+          height = 0.80,
+          preview_cutoff = 120,
+        },
+        winblend = 0,
+        border = true,
+        borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+        color_devicons = true,
+      },
+      pickers = {
+        find_files = {
+          theme = "dropdown",
+          previewer = false,
+        },
+        live_grep = {
+          theme = "ivy",
+        },
       },
       extensions = {
         file_browser = {
           hidden = false, -- don't show hidden files
+        },
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
         },
       },
     })

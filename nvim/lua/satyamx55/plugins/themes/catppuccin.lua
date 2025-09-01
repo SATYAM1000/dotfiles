@@ -37,15 +37,48 @@ return {
           -- miscs = {}, -- Uncomment to turn off hard-coded styles
         },
         color_overrides = {},
-        custom_highlights = {},
+        custom_highlights = function(colors)
+          return {
+            -- Make the main editor as dark as the sidebar
+            Normal = { bg = colors.mantle },
+            NormalFloat = { bg = colors.mantle },
+            NormalNC = { bg = colors.mantle },
+            LineNr = { bg = colors.mantle },
+            SignColumn = { bg = colors.mantle },
+            EndOfBuffer = { bg = colors.mantle },
+            -- Keep sidebar consistent
+            NvimTreeNormal = { bg = colors.mantle },
+            NvimTreeNormalNC = { bg = colors.mantle },
+            NvimTreeEndOfBuffer = { bg = colors.mantle },
+            -- Make splits and borders blend
+            VertSplit = { bg = colors.mantle, fg = colors.surface0 },
+            WinSeparator = { bg = colors.mantle, fg = colors.surface0 },
+            StatusLine = { bg = colors.mantle },
+            StatusLineNC = { bg = colors.mantle },
+          }
+        end,
         integrations = {
           aerial = true,
           alpha = true,
           cmp = true,
+          dashboard = true,
+          flash = true,
           gitsigns = true,
+          headlines = true,
           illuminate = true,
-          indent_blankline = { enabled = true },
+          indent_blankline = { 
+            enabled = true,
+            scope_color = "lavender",
+            colored_indent_levels = false,
+          },
+          leap = true,
+          lsp_trouble = true,
           mason = true,
+          markdown = true,
+          mini = {
+            enabled = true,
+            indentscope_color = "lavender",
+          },
           native_lsp = {
             enabled = true,
             virtual_text = {
@@ -53,17 +86,42 @@ return {
               hints = { "italic" },
               warnings = { "italic" },
               information = { "italic" },
+              ok = { "italic" },
             },
             underlines = {
               errors = { "underline" },
               hints = { "underline" },
               warnings = { "underline" },
               information = { "underline" },
+              ok = { "underline" },
+            },
+            inlay_hints = {
+              background = true,
             },
           },
-          notify = true,
+          navic = { 
+            enabled = true,
+            custom_bg = "NONE",
+          },
           neotree = true,
+          neotest = true,
+          noice = true,
+          notify = true,
+          nvimtree = true,
+          octo = true,
+          overseer = true,
+          pounce = true,
+          rainbow_delimiters = true,
+          semantic_tokens = true,
+          telescope = {
+            enabled = true,
+            style = "nvchad", -- or "classic"
+          },
           treesitter = true,
+          treesitter_context = true,
+          trouble = true,
+          vim_sneak = true,
+          vimwiki = true,
           which_key = true,
         },
       })

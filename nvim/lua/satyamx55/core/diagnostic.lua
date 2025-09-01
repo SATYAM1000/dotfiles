@@ -15,7 +15,14 @@ vim.diagnostic.config({
     header = "",
     prefix = "",
   },
-  signs = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = " ",
+      [vim.diagnostic.severity.WARN] = " ",
+      [vim.diagnostic.severity.HINT] = "󰠠 ",
+      [vim.diagnostic.severity.INFO] = " ",
+    },
+  },
   underline = true,
   update_in_insert = true, -- Show diagnostics even in insert mode
   severity_sort = true,
