@@ -24,8 +24,30 @@ return {
     cmp.setup({
       completion = {
         completeopt = "menu,menuone,preview,noselect",
+        -- Don't trigger completion automatically for single digits
+        keyword_length = 2, -- Minimum 2 characters before showing completions
       },
       preselect = cmp.PreselectMode.Item, -- Add this to preselect the first item
+      -- Disable completion for certain patterns
+      enabled = function()
+        -- Disable completion in comments
+        local context = require("cmp.config.context")
+        if context.in_treesitter_capture("comment") or context.in_syntax_group("Comment") then
+          return false
+        end
+        
+        -- Get current line and cursor position
+        local col = vim.fn.col(".") - 1
+        local line = vim.fn.getline(".")
+        local before_cursor = line:sub(1, col)
+        
+        -- Disable if we're just typing numbers
+        if before_cursor:match("%d+$") and not before_cursor:match("[%a_]%d+$") then
+          return false
+        end
+        
+        return true
+      end,
       snippet = { -- configure how nvim-cmp interacts with snippet engine
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -44,7 +66,16 @@ return {
       sources = cmp.config.sources({
         { name = "nvim_lsp", priority = 1000 },
         { name = "luasnip", priority = 750 }, -- snippets
-        { name = "buffer", priority = 500 }, -- text within current buffer
+        { 
+          name = "buffer", 
+          priority = 500,
+          option = {
+            -- Don't show buffer completions for words shorter than 3 characters
+            keyword_length = 3,
+            -- Don't index numbers as completion candidates
+            keyword_pattern = [[\k\+]], -- Only match keyword characters, not plain numbers
+          }
+        }, -- text within current buffer
         { name = "path", priority = 900 }, -- file system paths
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
