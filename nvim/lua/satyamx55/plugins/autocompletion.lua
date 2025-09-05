@@ -4,6 +4,7 @@ return {
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
     "hrsh7th/cmp-path", -- source for file system paths
+    "hrsh7th/cmp-nvim-lsp", -- LSP source for autocompletion
     {
       "L3MON4D3/LuaSnip",
       -- follow latest release.
@@ -28,6 +29,11 @@ return {
         keyword_length = 2, -- Minimum 2 characters before showing completions
       },
       preselect = cmp.PreselectMode.Item, -- Add this to preselect the first item
+      -- Show more detailed information in completion menu
+      window = {
+        completion = cmp.config.window.bordered(),
+        documentation = cmp.config.window.bordered(),
+      },
       -- Disable completion for certain patterns
       enabled = function()
         -- Disable completion in comments
@@ -83,6 +89,26 @@ return {
         format = lspkind.cmp_format({
           maxwidth = 50,
           ellipsis_char = "...",
+          -- Show import source information
+          before = function(entry, vim_item)
+            -- Show import source for LSP completions
+            if entry.source.name == "nvim_lsp" then
+              -- Try to get the import source from the completion item
+              local completion_item = entry:get_completion_item()
+              if completion_item and completion_item.detail then
+                vim_item.menu = completion_item.detail
+              elseif completion_item and completion_item.source then
+                vim_item.menu = completion_item.source
+              else
+                -- Fallback to LSP client name
+                local source_name = entry.source.source.client.name
+                if source_name then
+                  vim_item.menu = "[" .. source_name .. "]"
+                end
+              end
+            end
+            return vim_item
+          end,
         }),
       },
     })

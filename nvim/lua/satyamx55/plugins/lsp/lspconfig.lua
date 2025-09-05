@@ -69,6 +69,16 @@ return {
     -- used to enable autocompletion (assign to every lsp server config)
     local capabilities = cmp_nvim_lsp.default_capabilities()
     
+    -- Enhanced capabilities for better import suggestions
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    capabilities.textDocument.completion.completionItem.resolveSupport = {
+      properties = {
+        "documentation",
+        "detail",
+        "additionalTextEdits",
+      },
+    }
+    
     -- Diagnostic signs are configured in core/diagnostic.lua
     
     -- Setup servers with mason-lspconfig integration
@@ -103,6 +113,37 @@ return {
         lspconfig["emmet_ls"].setup({
           capabilities = capabilities,
           filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
+        })
+      elseif server_name == "ts_ls" then
+        -- configure typescript server with enhanced import suggestions
+        lspconfig["ts_ls"].setup({
+          capabilities = capabilities,
+          settings = {
+            typescript = {
+              suggest = {
+                includeCompletionsForImportStatements = true,
+                includeCompletionsWithSnippetText = true,
+                includeCompletionsWithClassMemberSnippets = true,
+                includeCompletionsWithObjectLiteralMethodSnippets = true,
+              },
+              preferences = {
+                includePackageJsonAutoImports = "auto",
+                importModuleSpecifierPreference = "relative",
+              },
+            },
+            javascript = {
+              suggest = {
+                includeCompletionsForImportStatements = true,
+                includeCompletionsWithSnippetText = true,
+                includeCompletionsWithClassMemberSnippets = true,
+                includeCompletionsWithObjectLiteralMethodSnippets = true,
+              },
+              preferences = {
+                includePackageJsonAutoImports = "auto",
+                importModuleSpecifierPreference = "relative",
+              },
+            },
+          },
         })
       elseif server_name == "lua_ls" then
         -- configure lua server (with special settings)
@@ -148,7 +189,37 @@ return {
       if not server_installed then
         local ok, _ = pcall(require, "lspconfig." .. server_name)
         if ok then
-          if server_name == "lua_ls" then
+          if server_name == "ts_ls" then
+            lspconfig[server_name].setup({
+              capabilities = capabilities,
+              settings = {
+                typescript = {
+                  suggest = {
+                    includeCompletionsForImportStatements = true,
+                    includeCompletionsWithSnippetText = true,
+                    includeCompletionsWithClassMemberSnippets = true,
+                    includeCompletionsWithObjectLiteralMethodSnippets = true,
+                  },
+                  preferences = {
+                    includePackageJsonAutoImports = "auto",
+                    importModuleSpecifierPreference = "relative",
+                  },
+                },
+                javascript = {
+                  suggest = {
+                    includeCompletionsForImportStatements = true,
+                    includeCompletionsWithSnippetText = true,
+                    includeCompletionsWithClassMemberSnippets = true,
+                    includeCompletionsWithObjectLiteralMethodSnippets = true,
+                  },
+                  preferences = {
+                    includePackageJsonAutoImports = "auto",
+                    importModuleSpecifierPreference = "relative",
+                  },
+                },
+              },
+            })
+          elseif server_name == "lua_ls" then
             lspconfig[server_name].setup({
               capabilities = capabilities,
               settings = {
