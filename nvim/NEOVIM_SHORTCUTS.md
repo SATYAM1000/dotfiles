@@ -79,57 +79,91 @@
 
 ## 🎯 Your Custom Keymaps (Based on Config)
 
-### Telescope (Fuzzy Finder)
-- `<leader>ff` - Find files
-- `<leader>fg` - Live grep
-- `<leader>fb` - Find buffers
-- `<leader>fh` - Find help tags
-- `<leader>fo` - Find old files
-- `<leader>fz` - Find in current file
+**Leader Key**: `<Space>`
 
-### LSP (Language Server Protocol)
-- `gd` - Go to definition
-- `gr` - Go to references
-- `K` - Hover documentation
-- `<leader>ca` - Code actions
-- `<leader>rn` - Rename symbol
-- `<leader>D` - Type definition
-- `<leader>ds` - Document symbols
-- `<leader>ws` - Workspace symbols
+### 🔍 Telescope (Fuzzy Finder)
+- `<leader>ff` - Find files in current directory
+- `<leader>fr` - Find recent files
+- `<leader>fs` - Find string in current directory (live grep)
+- `<leader>fc` - Find string under cursor in current directory
+- `<leader>fb` - Find open buffers
+- `gR` - Show LSP references (Telescope)
+- `gd` - Show LSP definitions (Telescope)
+- `gi` - Show LSP implementations (Telescope)
+- `gt` - Show LSP type definitions (Telescope)
 
-### Git Operations
-- `<leader>gb` - Git blame
-- `<leader>gd` - Git diff
-- `<leader>gs` - Git status
-- `<leader>gp` - Git push
-- `<leader>gl` - Git log
+### 💻 LSP (Language Server Protocol)
+- `K` - Show documentation for symbol under cursor
+- `gD` - Go to declaration
+- `<leader>ca` - See available code actions
+- `<leader>rn` - Smart rename symbol
+- `<leader>D` - Show buffer diagnostics
+- `<leader>d` - Show line diagnostics
+- `[d` - Go to previous diagnostic
+- `]d` - Go to next diagnostic
+- `<leader>rs` - Restart LSP
 
-### Tree Explorer
-- `<leader>e` - Toggle file tree
-- `a` - Create file/folder
-- `d` - Delete file/folder
-- `r` - Rename file/folder
-- `x` - Cut file/folder
-- `c` - Copy file/folder
-- `p` - Paste file/folder
+### 🌐 Git Operations (GitSigns)
+- `]h` - Next hunk
+- `[h` - Previous hunk
+- `<leader>hs` - Stage hunk
+- `<leader>hr` - Reset hunk
+- `<leader>hS` - Stage buffer
+- `<leader>hR` - Reset buffer
+- `<leader>hu` - Undo stage hunk
+- `<leader>hp` - Preview hunk
+- `<leader>hb` - Blame line
+- `<leader>hB` - Toggle line blame
+- `<leader>hd` - Diff this
+- `<leader>hD` - Diff this ~
 
-### Terminal
-- `<leader>tt` - Toggle terminal
-- `<leader>tf` - Toggle float terminal
-- `<leader>th` - Horizontal terminal
-- `<leader>tv` - Vertical terminal
+### 📁 File Tree (NvimTree)
+- `<leader>ee` - Toggle file explorer
+- `<leader>ef` - Toggle file explorer on current file
+- `<leader>ec` - Collapse file explorer
+- `<leader>er` - Refresh file explorer
 
-### Buffer Management
-- `<leader>bd` - Delete buffer
-- `<leader>bn` - Next buffer
-- `<leader>bp` - Previous buffer
-- `<leader>bl` - List buffers
+### 💻 Terminal (ToggleTerm - FLOATING)
+- `tt` - Toggle floating terminal
+- `<C-x>` - Exit terminal mode (from terminal)
+- `<C-h/j/k/l>` - Navigate windows from terminal
+- `<C-\>` - Default toggle mapping
 
-### Window Management
-- `<leader>wv` - Split vertically
-- `<leader>ws` - Split horizontally
-- `<leader>wc` - Close window
-- `<leader>wo` - Close other windows
+### 🪟 Window Management
+- `<leader>sv` - Split window vertically
+- `<leader>sh` - Split window horizontally
+- `<leader>se` - Make splits equal size
+- `<leader>sx` - Close current split
+- `sh/sk/sj/sl` - Navigate between windows
+
+### 📑 Tab Management
+- `<leader>to` - Open new tab
+- `<leader>tx` - Close current tab
+- `<leader>tn` - Go to next tab
+- `<leader>tp` - Go to previous tab
+- `<leader>tf` - Open current buffer in new tab
+
+### 🔧 Utility Shortcuts
+- `jk` - Exit insert mode
+- `<leader>nh` - Clear search highlights
+- `<leader>+` - Increment number
+- `<leader>-` - Decrement number
+- `<leader>dw` - Delete word backwards
+- `<C-a>` - Select all
+
+### 💾 Session Management
+- `<leader>wr` - Restore session for current directory
+- `<leader>ws` - Save session for current directory
+
+### 🚨 Trouble (Diagnostics)
+- `<leader>xw` - Open trouble workspace diagnostics
+- `<leader>xd` - Open trouble document diagnostics
+- `<leader>xq` - Open trouble quickfix list
+- `<leader>xl` - Open trouble location list
+- `<leader>xt` - Open todos in trouble
+
+### 🔍 Which-Key
+- `<leader>?` - Show buffer local keymaps
 
 ## 🎨 Theme & UI
 

@@ -96,8 +96,9 @@ return {
             vim.api.nvim_create_autocmd("BufWritePost", {
               pattern = { "*.js", "*.ts" },
               callback = function(ctx)
-                -- Here use ctx.match instead of ctx.file
-                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+                if ctx.match then
+                  client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+                end
               end,
             })
           end,
@@ -169,77 +170,5 @@ return {
       end
     end
     
-    -- Also setup servers that might not be installed yet but are configured
-    -- This ensures they work when installed later
-    local servers_to_setup = {
-      "ts_ls", "html", "cssls", "tailwindcss", "svelte", 
-      "lua_ls", "graphql", "emmet_ls", "prismals", "pyright"
-    }
-    
-    for _, server_name in ipairs(servers_to_setup) do
-      local server_installed = false
-      for _, installed_server in ipairs(servers) do
-        if installed_server == server_name then
-          server_installed = true
-          break
-        end
-      end
-      
-      -- If not already setup by the installed servers loop
-      if not server_installed then
-        local ok, _ = pcall(require, "lspconfig." .. server_name)
-        if ok then
-          if server_name == "ts_ls" then
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-              settings = {
-                typescript = {
-                  suggest = {
-                    includeCompletionsForImportStatements = true,
-                    includeCompletionsWithSnippetText = true,
-                    includeCompletionsWithClassMemberSnippets = true,
-                    includeCompletionsWithObjectLiteralMethodSnippets = true,
-                  },
-                  preferences = {
-                    includePackageJsonAutoImports = "auto",
-                    importModuleSpecifierPreference = "relative",
-                  },
-                },
-                javascript = {
-                  suggest = {
-                    includeCompletionsForImportStatements = true,
-                    includeCompletionsWithSnippetText = true,
-                    includeCompletionsWithClassMemberSnippets = true,
-                    includeCompletionsWithObjectLiteralMethodSnippets = true,
-                  },
-                  preferences = {
-                    includePackageJsonAutoImports = "auto",
-                    importModuleSpecifierPreference = "relative",
-                  },
-                },
-              },
-            })
-          elseif server_name == "lua_ls" then
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-              settings = {
-                Lua = {
-                  diagnostics = {
-                    globals = { "vim" },
-                  },
-                  completion = {
-                    callSnippet = "Replace",
-                  },
-                },
-              },
-            })
-          else
-            lspconfig[server_name].setup({
-              capabilities = capabilities,
-            })
-          end
-        end
-      end
-    end
   end,
 }

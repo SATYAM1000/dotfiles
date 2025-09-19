@@ -28,24 +28,6 @@ opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or 
 -- clipboard
 opt.clipboard:append("unnamedplus")
 
--- Only use system clipboard in insert mode
--- vim.api.nvim_create_autocmd({ "InsertEnter" }, {
---   callback = function()
---     vim.opt.clipboard:append("unnamedplus") -- enable clipboard in insert mode
---   end,
--- })
---
--- vim.api.nvim_create_autocmd({ "InsertLeave" }, {
---   callback = function()
---     vim.opt.clipboard:remove("unnamedplus") -- disable clipboard outside insert mode
---   end,
--- })
---
--- -- Configure delete behavior to not affect clipboard
--- vim.keymap.set({ "n", "v" }, "d", '"_d', { noremap = true }) -- delete without yanking
--- vim.keymap.set({ "n", "v" }, "D", '"_D', { noremap = true }) -- delete without yanking
--- vim.keymap.set({ "n", "v" }, "x", '"_x', { noremap = true }) -- delete without yanking
--- vim.keymap.set({ "n", "v" }, "X", '"_X', { noremap = true }) -- delete without yanking
 
 -- Search options already defined above (lines 16-17)
 vim.opt.lazyredraw = true
