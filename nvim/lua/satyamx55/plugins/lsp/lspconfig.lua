@@ -9,16 +9,19 @@ return {
     { "folke/neodev.nvim", opts = {} },
   },
   config = function()
-    -- Use modern vim.lsp.config instead of deprecated lspconfig
+    local lspconfig = require("lspconfig")
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
     local keymap = vim.keymap
 
+    -- Create an augroup for LSP formatting
+    local format_group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+
     vim.api.nvim_create_autocmd("LspAttach", {
-      group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+      group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
       callback = function(ev)
         local opts = { buffer = ev.buf, silent = true }
 
-        -- set keybinds
+        -- Set keybinds
         opts.desc = "Show LSP references"
         keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
@@ -55,8 +58,40 @@ return {
         opts.desc = "Show documentation for what is under cursor"
         keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
+        opts.desc = "Show signature help"
+        keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
+
+        opts.desc = "Format code"
+        keymap.set({ "n", "v" }, "<leader>lf", function()
+          vim.lsp.buf.format({ async = false })
+        end, opts)
+
+        opts.desc = "Toggle inlay hints"
+        if vim.lsp.inlay_hint then
+          keymap.set("n", "<leader>ih", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          end, opts)
+        end
+
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+
+        -- Format on save for specific file types
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        if client and client.server_capabilities.documentFormattingProvider then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = format_group,
+            buffer = ev.buf,
+            callback = function()
+              -- Only format specific file types automatically
+              local ft = vim.bo[ev.buf].filetype
+              local format_filetypes = { "lua", "javascript", "typescript", "javascriptreact", "typescriptreact", "json", "html", "css", "scss" }
+              if vim.tbl_contains(format_filetypes, ft) then
+                vim.lsp.buf.format({ async = false, timeout_ms = 3000 })
+              end
+            end,
+          })
+        end
       end,
     })
 
@@ -146,14 +181,8 @@ return {
     for _, server_name in ipairs(servers) do
       local config = server_configs[server_name] or { capabilities = capabilities }
 
-      -- Use modern vim.lsp.config if available, fallback to lspconfig
-      if vim.lsp.config and vim.fn.has('nvim-0.11') == 1 then
-        vim.lsp.config[server_name] = config
-      else
-        -- Fallback to lspconfig for older versions
-        local lspconfig = require("lspconfig")
-        lspconfig[server_name].setup(config)
-      end
+      -- Always use lspconfig for compatibility
+      lspconfig[server_name].setup(config)
     end
   end,
 }

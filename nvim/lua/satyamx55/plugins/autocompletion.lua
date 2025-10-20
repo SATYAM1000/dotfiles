@@ -24,11 +24,16 @@ return {
     require("luasnip.loaders.from_vscode").lazy_load()
     cmp.setup({
       completion = {
-        completeopt = "menu,menuone,preview,noselect",
+        completeopt = "menu,menuone,noselect",
         -- Don't trigger completion automatically for single digits
-        keyword_length = 2, -- Minimum 2 characters before showing completions
+        keyword_length = 1, -- Minimum 1 character before showing completions
       },
-      preselect = cmp.PreselectMode.Item, -- Add this to preselect the first item
+      preselect = cmp.PreselectMode.None, -- Don't preselect items
+      performance = {
+        debounce = 60,
+        throttle = 30,
+        fetching_timeout = 100,
+      },
       -- Show more detailed information in completion menu
       window = {
         completion = cmp.config.window.bordered(),
@@ -60,13 +65,31 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-        ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
+        ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+        ["<C-n>"] = cmp.mapping.select_next_item(), -- next suggestion
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
         ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-        ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Changed select to true to auto-select highlighted item
+        ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept selected item or fallback to normal CR
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
       }),
       -- sources for autocompletion
       sources = cmp.config.sources({
